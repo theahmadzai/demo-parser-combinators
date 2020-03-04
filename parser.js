@@ -10,22 +10,34 @@ Parser.prototype.run = function (code) {
 };
 
 Parser.prototype.map = function (fn) {
-    return new Parser(parserState => {
-        parserState = this.parserStateTransformer(parserState);
+    return new Parser(state => {
+        state = this.parserStateTransformer(state);
 
-        if (parserState.isError) return parserState;
+        if (state.isError) return state;
 
-        return parserState.updateResult(fn(parserState.result));
+        return state.updateResult(fn(state.result));
+    });
+};
+
+Parser.prototype.chain = function (fn) {
+    return new Parser(state => {
+        let nextState = this.parserStateTransformer(state);
+
+        if (nextState.isError) return state;
+
+        let nextParser = fn(nextState.result);
+
+        return nextParser.parserStateTransformer(nextState);
     });
 };
 
 Parser.prototype.mapError = function (fn) {
-    return new Parser(parserState => {
-        parserState = this.parserStateTransformer(parserState);
+    return new Parser(state => {
+        state = this.parserStateTransformer(state);
 
-        if (!parserState.isError) return parserState;
+        if (!state.isError) return state;
 
-        return parserState.updateError(fn(parserState.error, parserState.index));
+        return state.updateError(fn(state.error, state.index));
     });
 };
 
