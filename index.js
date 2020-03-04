@@ -11,8 +11,9 @@ const parser = SequenceOf([
         Match(Type.isDigit),
         Match(Type.isLetter),
     ]),
+    Many(Match(Type.isDigit), 1)
 ]);
 
 console.log(
-    parser.run('inta=555a533')
+    parser.run('int7')
 );

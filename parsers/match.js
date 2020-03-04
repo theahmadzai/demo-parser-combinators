@@ -18,7 +18,7 @@ const match = fn => new Parser(state => {
     if (pos > 0) {
         return state.update(pos, slicedTarget.slice(0, pos));
     }
-    console.log('Error')
+
     return state.updateError(`match: Couldn't match ${slicedTarget.slice(0, 5)} at index ${index}`);
 });
 

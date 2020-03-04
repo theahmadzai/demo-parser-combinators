@@ -7,7 +7,7 @@ const State = {
 
     update: function (index, result) { return { ...this, index: this.index + index, result } },
     updateResult: function (result) { return { ...this, result } },
-    updateError: function (error) { return { ...this, error } }
+    updateError: function (error) { return { ...this, isError: true, error } }
 }
 
 module.exports = State;
